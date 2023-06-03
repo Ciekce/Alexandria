@@ -8,11 +8,13 @@ PACK(struct S_HashEntry {
 	int16_t eval = 0;
 	TTKey tt_key = 0;
 	uint8_t depth = 0;
-	uint8_t flags = HFNONE;
+	uint8_t flags : 2 = HFNONE;
+	uint8_t age : 6 = 0;
 });
 
 struct S_HashTable {
 	std::vector<S_HashEntry> pTable;
+	uint8_t age;
 };
 
 extern S_HashTable HashTable[1];
@@ -20,6 +22,8 @@ extern S_HashTable HashTable[1];
 void ClearHashTable(S_HashTable* table);
 //Initialize an Hashtable of size MB
 void InitHashTable(S_HashTable* table, uint64_t MB);
+
+void AgeHashTable();
 
 bool ProbeHashEntry(const S_Board* pos, S_HashEntry* tte);
 

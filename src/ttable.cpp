@@ -12,6 +12,7 @@ S_HashTable HashTable[1];
 
 void ClearHashTable(S_HashTable* table) {
 	std::fill(table->pTable.begin(), table->pTable.end(), S_HashEntry());
+	table->age = 0;
 }
 
 void InitHashTable(S_HashTable* table, uint64_t MB) {
@@ -20,6 +21,10 @@ void InitHashTable(S_HashTable* table, uint64_t MB) {
 	table->pTable.resize(numEntries);
 	ClearHashTable(table);
 	std::cout << "HashTable init complete with " << numEntries << " entries\n";
+}
+
+void AgeHashTable() {
+	HashTable->age = (HashTable->age + 1) % 64;
 }
 
 bool ProbeHashEntry(const S_Board* pos, S_HashEntry* tte) {
@@ -48,11 +53,13 @@ void StoreHashEntry(const PosKey key, const int ply, const int move, int score, 
 
 	// Overwrite less valuable entries (cheapest checks first)
 	if (flags == HFEXACT ||
+		HashTable->age != tte->age ||
 		static_cast<TTKey>(key) != tte->tt_key ||
 		depth + 11 + 2 * pv > tte->depth)
 	{
 		tte->tt_key = static_cast<TTKey>(key);
 		tte->flags = static_cast<uint8_t>(flags);
+		tte->age = HashTable->age;
 		tte->score = static_cast<int16_t>(score);
 		tte->eval = eval;
 		tte->depth = static_cast<uint8_t>(depth);

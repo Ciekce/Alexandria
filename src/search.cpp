@@ -253,6 +253,9 @@ void RootSearch(int depth, S_ThreadData* td, S_UciOptions* options) {
 	std::cout << "bestmove ";
 	PrintMove(GetBestMove(&td->pv_table));
 	std::cout << "\n";
+
+	//Increment hashtable age
+	AgeHashTable();
 }
 
 // SearchPosition is the actual function that handles the search, it sets up the variables needed for the search , calls the Negamax function and handles the console output
