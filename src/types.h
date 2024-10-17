@@ -116,3 +116,6 @@ constexpr int PieceType[12] = { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING,
 constexpr int SEEValue[15] = { 100, 422, 422, 642, 1015, 0,
                                100, 422, 422, 642, 1015, 0, 0, 0, 0 };
 
+[[nodiscard]] constexpr bool isMajorPiece(int piece) {
+    return piece != EMPTY && (PieceType[piece] == ROOK || PieceType[piece] == QUEEN);
+}

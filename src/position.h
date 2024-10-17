@@ -47,6 +47,7 @@ public:
     ZobristKey pawnKey = 0ULL;
     ZobristKey whiteNonPawnKey = 0ULL;
     ZobristKey blackNonPawnKey = 0ULL;
+    ZobristKey majorKey = 0ULL;
     // stores the state of the board  rollback purposes
     int historyStackHead = 0;
     BoardState    history[MAXPLY];

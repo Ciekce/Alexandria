@@ -129,6 +129,7 @@ void updateCorrHistScore(const Position *pos, SearchData *sd, const int depth, c
     updateSingleCorrHistScore(sd->pawnCorrHist[pos->side][pos->pawnKey % CORRHIST_SIZE], scaledDiff, newWeight);
     updateSingleCorrHistScore(sd->whiteNonPawnCorrHist[pos->side][pos->whiteNonPawnKey % CORRHIST_SIZE], scaledDiff, newWeight);
     updateSingleCorrHistScore(sd->blackNonPawnCorrHist[pos->side][pos->blackNonPawnKey % CORRHIST_SIZE], scaledDiff, newWeight);
+    updateSingleCorrHistScore(sd->majorCorrHist[pos->side][pos->majorKey % CORRHIST_SIZE], scaledDiff, newWeight);
 }
 
 int adjustEvalWithCorrHist(const Position *pos, const SearchData *sd, const int rawEval) {
@@ -137,6 +138,7 @@ int adjustEvalWithCorrHist(const Position *pos, const SearchData *sd, const int 
     adjustedEval += sd->pawnCorrHist[pos->side][pos->pawnKey % CORRHIST_SIZE] / CORRHIST_GRAIN;
     adjustedEval += sd->whiteNonPawnCorrHist[pos->side][pos->whiteNonPawnKey % CORRHIST_SIZE] / CORRHIST_GRAIN;
     adjustedEval += sd->blackNonPawnCorrHist[pos->side][pos->blackNonPawnKey % CORRHIST_SIZE] / CORRHIST_GRAIN;
+    adjustedEval += sd->majorCorrHist[pos->side][pos->pawnKey % CORRHIST_SIZE] / CORRHIST_GRAIN;
 
     return std::clamp(adjustedEval, -MATE_FOUND + 1, MATE_FOUND - 1);
 }
@@ -157,4 +159,5 @@ void CleanHistories(SearchData* sd) {
     std::memset(sd->pawnCorrHist, 0, sizeof(sd->pawnCorrHist));
     std::memset(sd->whiteNonPawnCorrHist, 0, sizeof(sd->whiteNonPawnCorrHist));
     std::memset(sd->blackNonPawnCorrHist, 0, sizeof(sd->blackNonPawnCorrHist));
+    std::memset(sd->majorCorrHist, 0, sizeof(sd->majorCorrHist));
 }
